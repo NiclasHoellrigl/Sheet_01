@@ -1,0 +1,88 @@
+a)
+Expression: 5 * 7 / 3
+Result: 11
+Type: int
+Reason: no implicit cast, so everything after the decimal gets cut off.
+
+
+b)
+Expression: 1 << 8 % 3
+Result: 4
+Type: int
+Reason: modulo (%) has higher precedence than shift (<<). First 8%3 is 2, then shift 1 by 2 to the left. 0b100 = 4
+
+
+c)
+Expression: (short) Integer.MAX_VALUE
+Result: -1
+Type: short
+Reason: explicit cast from the largest possible integer value to short. Largest integer value is
+0111 1111 1111 1111 1111 1111 1111 1111 this gets cut into
+                    1111 1111 1111 1111 which can be converted in
+                    0000 0000 0000 0001 thus the complement 1111 1111 1111 1111 corresponds to -1.
+
+
+d)
+Expression: 23 / (double) 11
+Result: 2.090909090909091
+Type: double
+Reason: implicit cast of the result into double because 11 is explicit casted to double and Java converts into the
+most general type if possible.
+
+
+e)
+Expression: (double) (23/11)
+Result: 2.0
+Type: double
+Reason: First we have the division of integer by integer (23/11) which is 2 with the digits after the decimal being
+cut of. Then explicit cast to double giving 2.0
+
+
+f)
+Expression: 42f
+Result: 42.0
+Type: float
+Reason: The f at the end indicates that we want a float here.
+
+
+g)
+Expression: 4e3D
+Result: 4000.0
+Type: double
+Reason: Exponential representation 4 times 10^3 with the suffix D for double.
+
+
+h)
+Expression: 0.1f == 0.1
+Result: false
+Type: boolean
+Reason: because of the limited number of bits for the IEEE754 standard, we can not be sure that a float and a double
+are the same even if they should be by definition. Better use something like abs(a-b)<0.01 to check for equality.
+
+
+i)
+Expression: "Peter=Coffee+" + 'chocolate' + 2.0
+Result: ERROR
+Type: If ERROR is corrected we get a String
+Reason: chocolate should be in double quotes.
+
+
+j)
+Expression: "Peter=Coffee+" + "chocolate" + 2.0
+Result: Peter=Coffee+chocolate2.0
+Type: String
+Reason: magic? But probably the println method automatically converts numbers into String.
+
+
+k)
+Expression: 1 == 24 % 3 && 4 > 7 || true
+Result: true
+Type: boolean
+Reason: 1 == || true is always true.
+
+
+l)
+Expression: 1 == 24 % 3 ? 4 : 7
+Result: 7
+Type: int
+Reason: 1 == 0 evaluates to false, therefore the number after the : is chosen.
